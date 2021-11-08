@@ -22,3 +22,5 @@
 ### DOCKER ###
 
 docker-compose.yaml
+.env
+public/.htaccess
