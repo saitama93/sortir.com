@@ -18,17 +18,20 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
     {
         $user = new Utilisateur();
-        $user->setNom("Nom");
-        $user->setPrenom("Prenom");
-        $user->setMail("Mail");
-        $user->setPrenom("Prenom");
-        $user->setTelephone("0202020302");
-        $user->setIsAdmin(false);
+        
+    
         $user->setIsActif(true);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $isAdmin = $form->get('isAdmin')->getData();
+            $isActif = $form->get('isActif')->getData();
+            // Attribution du rôle admin
+
+            if ($isAdmin === true) {
+                $user->setRoles(['ROLE_ADMIN']);
+            }
             // encode the plain password
             $user->setPassword(
             $userPasswordHasherInterface->hashPassword(
