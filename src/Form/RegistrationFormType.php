@@ -25,22 +25,15 @@ class RegistrationFormType extends ApplicationType
                 // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez rentrer un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Votre mot de passe doit au moins contenire {{ limit }} caractères',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
             ]))
             ->add('mail', EmailType:: class, $this->getConfiguration("Adresse mail", "Saisir votre adresse mail"))
             ->add('telephone', TextType::class, $this->getConfiguration("Numéro de téléphone", "Saisir votre numéro"))
             ->add('nom', TextType::class, $this->getConfiguration("Nom", "Saisir votre nom"))
             ->add('prenom', TextType::class, $this->getConfiguration("Prénom", "Saisir votre prénom"))
+            ->add('isActif', CheckboxType::class, $this->getConfiguration("Cocher pour activer le compte", "" , [
+                'mapped' => true
+            ]))
+            ->add('isAdmin', CheckboxType::class, $this->getConfiguration("Cocher si c'est un compte administrateur", ""))
             ->add('agreeTerms', CheckboxType::class, $this->getConfiguration("Termes", "", [
                 'mapped' => false,
                 'constraints' => [
