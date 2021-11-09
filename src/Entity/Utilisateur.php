@@ -5,12 +5,14 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UtilisateurRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  * @ApiResource()
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
