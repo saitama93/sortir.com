@@ -25,10 +25,17 @@
             {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
     </head>
+
+    
     <body>
 
+
+
         {% include "partials/_navbar.html.twig" %}
-        {% block body %}{% endblock %}
+       <section class="container">
+   {% block body %}
+   {% endblock body %}
+</section>
 
         {% include "partials/_footer.html.twig" %}
 
