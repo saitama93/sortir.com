@@ -52,4 +52,27 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+
+
+    /**
+     * @Route("/utilisateur/update/{id}", name="utilisateur_update", methods={"GET","POST"})
+     */
+    public function update(Request $request, Utilisateur $utilisateur): Response
+    {
+        $form = $this->createForm(RegistrationFormType::class, $utilisateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('utilisateur/update.html.twig', [
+            'registrationForm' => $form->createView(),
+            'utilisateur' => $form
+        ]);
+    }
+
 }

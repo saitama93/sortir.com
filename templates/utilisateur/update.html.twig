@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
+{% block title %}Update{% endblock %}
 
 {% block body %}
-    <h1 class="text-center mt-5 mb-3">Inscription</h1>
+    <h1 class="text-center mt-5 mb-3">Mise à jour du compte</h1>
+
+    <div class="container">
         <div class="row">
             <div class="col-xs-12">
                 {{ form_start(registrationForm) }}
@@ -15,12 +17,13 @@
                 {{ form_row(registrationForm.telephone) }}
                 {{ form_row(registrationForm.isActif) }}
                 {{ form_row(registrationForm.isAdmin) }}
-                {{ form_row(registrationForm.agreeTerms) }}
+                {{ form_row(registrationForm.agreeTerms) }} 
 
                 <div class="d-flex justify-content-center items-center">
-                    <button type="submit" class="btn btn-info mb-3">S'inscrire</button>
+                    <button type="submit" class="btn btn-info mb-3">Valider</button>
                 </div>
                 {{ form_end(registrationForm) }}
             </div>
         </div>
+    </div>
 {% endblock %}
