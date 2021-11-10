@@ -37,8 +37,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min=5, minMessage="Votre mot de passe doit faire au moins 5 caratères")
-     * @Assert\Length(max=10, maxMessage="Votre mot de passe doit faire au plus 20 caratères")
      */
     private $password;
 
@@ -56,6 +54,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Vous devez renseigner un numéro de téléphone")
      */
     private $telephone;
 
@@ -67,6 +66,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotBlank(message="Vous devez renseigner votre adresse mail")
      */
     private $isAdmin;
 
