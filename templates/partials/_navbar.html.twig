@@ -10,10 +10,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('home')}}">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link "href="{{ path('home')}}">Mon profil</a>
-                </li>
                 {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link "href="{{ path('app_profil', { 'id' : app.user.id}) }}">Mon profil</a>
+                    </li>
                     <li class="nav-item">
                     	<a class="nav-link " href="{{ path('app_logout')}}">Se déconnecter</a>
                     </li>
