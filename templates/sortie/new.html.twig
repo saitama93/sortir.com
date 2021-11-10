@@ -3,9 +3,11 @@
 {% block title %}Nouvelle sortie{% endblock %}
 
 {% block body %}
-    <h1>Créer une nouvelle sortie</h1>
+     <h1 class="text-center mt-5 mb-3">Nouvelle sortie</h1>
 
-    {{ include('sortie/_form.html.twig') }}
+    {{ include('sortie/_form.html.twig' , {'labelSubmit': 'Ajouter'}) }}  
 
-    <a href="{{ path('home') }}">back to list</a>
+
+        
+    
 {% endblock %}
