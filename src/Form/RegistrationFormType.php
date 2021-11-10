@@ -33,7 +33,9 @@ class RegistrationFormType extends ApplicationType
             ->add('isActif', CheckboxType::class, $this->getConfiguration("Cocher pour activer le compte", "" , [
                 'mapped' => true
             ]))
-            ->add('isAdmin', CheckboxType::class, $this->getConfiguration("Cocher si c'est un compte administrateur", ""))
+            ->add('isAdmin', CheckboxType::class, $this->getConfiguration("Cocher si c'est un compte administrateur", "", [
+                'required' => false
+            ]))
             ->add('agreeTerms', CheckboxType::class, $this->getConfiguration("Termes", "", [
                 'mapped' => false,
                 'constraints' => [
