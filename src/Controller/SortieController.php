@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\Sortie;
+use App\Entity\Utilisateur;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,6 +31,11 @@ class SortieController extends AbstractController
     public function new(Request $request): Response
     {
         $sortie = new Sortie();
+
+       $utilisateur =$this->getUser();
+        $sortie->setOrganisateur($utilisateur);
+        $sortie->setSite($utilisateur->getSiteRattachement());
+    
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
 

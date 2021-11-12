@@ -36,20 +36,7 @@ class SortieType extends ApplicationType
             ->add('infoSortie', TextareaType::class, $this->getConfiguration("Informations", "Informations complémentaires sur la sortie"))
             ->add('lieu', LieuType::class)
             
-            ->add('site', EntityType::class, [
-                // looks for choices from this entity
-                'class' => Site::class,
-
-                'required'   => true,
-                'placeholder' => '- Choisir un site -',
             
-                // uses the User.username property as the visible option string
-                'choice_label' => 'nom',
-            
-                // used to render a select box, check boxes or radios
-                // 'multiple' => true,
-                // 'expanded' => true,
-            ]);
         ;
     }
 
