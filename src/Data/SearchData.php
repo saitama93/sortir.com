@@ -31,4 +31,10 @@ class SearchData
      */
     public $participant = false;
 
+
+    /**
+     * @var boolean
+     */
+    public $nonparticipant = false;
+
 }

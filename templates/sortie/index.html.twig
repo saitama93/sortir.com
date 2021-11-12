@@ -9,6 +9,8 @@
 {% block body %}
 
 
+{% if form != null %}
+
 {{ form_start(form, {attr: {class: 'filter js-filter-form'}}) }}
 
   <div class="spinner-border js-loading" role="status" aria-hidden="true" style="display: none">
@@ -32,7 +34,7 @@
 
 {{ form_end(form) }}
 
-
+{% endif %}
 	
 
 	 <h1 class="text-center mt-5 mb-3">Sorties</h1>

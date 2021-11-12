@@ -48,13 +48,13 @@ class SortieRepository extends ServiceEntityRepository
 
         if (!empty($search->participant)) {
             $query = $query
-                ->andWhere(':user MEMBER OF sortie.participants')
+                ->andwhere(':user MEMBER OF sortie.participants')
                 ->setParameter('user', $user);
         }
 
         if (!empty($search->organisateur)) {
             $query = $query
-                ->andWhere(':user = organisateur')
+                ->orwhere(':user = organisateur')
                 ->setParameter('user', $user);
         }
 
