@@ -17,6 +17,8 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
     {
+
+
         $user = new Utilisateur();
         
     
@@ -25,6 +27,11 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $u =  $form->get('username')->getData();
+          
+
+            
             $isAdmin = $form->get('isAdmin')->getData();
             $isActif = $form->get('isActif')->getData();
             // Attribution du rôle admin
@@ -46,33 +53,16 @@ class RegistrationController extends AbstractController
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('home');
+        
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
-    }
 
+    
 
-
-    /**
-     * @Route("/utilisateur/update/{id}", name="utilisateur_update", methods={"GET","POST"})
-     */
-    public function update(Request $request, Utilisateur $utilisateur): Response
-    {
-        $form = $this->createForm(RegistrationFormType::class, $utilisateur);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('utilisateur/update.html.twig', [
-            'registrationForm' => $form->createView(),
-            'utilisateur' => $form
-        ]);
+    
     }
 
 }

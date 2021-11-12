@@ -1,0 +1,48 @@
+{% set url = "google.com" %}
+<div class="col-md-4 target my-3">
+	<div class="card bg-light mb-3">
+		<div class="card-header">
+			<strong>{{ sortie.nom }}</strong><br>
+		</div>
+		<a href="{{ url }}">
+			<img src="{{ asset('img/logo2.png') }}" alt="Image de l'annonce " style="height: 200px; width: 100%; display: block;">
+
+
+		</a>
+		<div class="card-body">
+			<h4 class="card-title">
+				{{ sortie.nom }}
+			</h4>
+			<p class="card-text mt-3 mb-4">
+				{{ sortie.infoSortie }}
+			</p>
+			<div class="test d-flex justify-content-between align-items-center">
+				<a href="google.com" class="more float-left hvr-icon-pulse-grow">En savoir
+					<i class="fas fa-plus-circle hvr-icon"></i>
+				</a>
+
+				{% if app.user and app.user != sortie.organisateur  %} 
+
+					<a class="reserver hvr-icon-buzz">Je réserve 
+					<i class="hvr-icon fas fa-exclamation-circle"></i></a>
+
+				{% endif %}
+				{% if  app.user and app.user == sortie.organisateur %}
+
+					<a  class="modifier hvr-icon-spin float-right">Modifier l'annonce
+					<i class="hvr-icon fas fa-cog"></i>
+					</a>
+
+					{% else %}
+
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () { // animation d'apparition sur les card des annonces
+ScrollReveal().reveal('.target', {delay: 250});
+});
+</script>
