@@ -10,6 +10,8 @@
 			<p class="card-text mt-3 mb-4">
 				{{ sortie.infoSortie }}
 			</p>
+
+            <h3>{{ sortie.participants|length ~'/' ~ sortie.nbInscriptionsMax ~' participants'}}</h3>
 			<div class="test d-flex justify-content-between align-items-center">
 				<a href="google.com" class="more float-left hvr-icon-pulse-grow">En savoir
 					<i class="fas fa-plus-circle hvr-icon"></i>
@@ -17,7 +19,7 @@
 
 				{% if app.user and app.user != sortie.organisateur  %} 
 
-					<a class="reserver hvr-icon-buzz">Je réserve 
+					<a class="reserver hvr-icon-buzz">Participer 
 					<i class="hvr-icon fas fa-exclamation-circle"></i></a>
 
 				{% endif %}
