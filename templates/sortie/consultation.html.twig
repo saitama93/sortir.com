@@ -1,129 +1,126 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Hello AccountController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .card {
-    width: 350px;
-    background-color: #efefef;
-    border: none;
-    cursor: pointer;
-    transition: all 0.5s
-}
 
-.image img {
-    transition: all 0.5s
-}
+	<style>
+		body {
+			color: #000;
+			overflow-x: hidden;
+			height: 100%;
+			background-color: #E1BEE7;
+			background-repeat: no-repeat
+		}
 
-.card:hover .image img {
-    transform: scale(1.5)
-}
+		.card {
+			width: 590px;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px 0 #AA00FF;
+			margin-top: 50px;
+			margin-bottom: 50px
+		}
 
-.btn {
-    height: 140px;
-    width: 140px;
-    border-radius: 50%
-}
+		.set-p {
+			padding-left: 15px;
+			padding-right: 15px
+		}
 
-.name {
-    font-size: 22px;
-    font-weight: bold
-}
+		.fa-angle-left,
+		.fa-angle-right {
+			position: absolute;
+			color: #757575;
+			font-size: 80px;
+			top: 100px;
+			cursor: pointer
+		}
 
-.idd {
-    font-size: 14px;
-    font-weight: 600
-}
+		#left {
+			left: 2%
+		}
 
-.idd1 {
-    font-size: 12px
-}
+		#left:hover {
+			color: #E0E0E0
+		}
 
-.number {
-    font-size: 22px;
-    font-weight: bold
-}
+		#right {
+			right: 2%
+		}
 
-.follow {
-    font-size: 12px;
-    font-weight: 500;
-    color: #444444
-}
+		#right:hover {
+			color: #E0E0E0
+		}
 
-.btn1 {
-    height: 40px;
-    width: 150px;
-    border: none;
-    background-color: #000;
-    color: #aeaeae;
-    font-size: 15px
-}
+		.image {
+			object-fit: cover;
+			width: 100%;
+			height: 320px;
+			border-top-left-radius: 10px;
+			border-top-right-radius: 10px;
+			display: none
+		}
 
-.text span {
-    font-size: 13px;
-    color: #545454;
-    font-weight: 500
-}
+		.image.active {
+			display: block
+		}
 
-.icons i {
-    font-size: 19px
-}
+		.rating {
+			background-color: #3D5AFE;
+			color: #fff;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			border-bottom-right-radius: 5px
+		}
 
-hr .new1 {
-    border: 1px solid
-}
+		.grade {
+			font-size: 18px
+		}
 
-.join {
-    font-size: 14px;
-    color: #a0a0a0;
-    font-weight: bold
-}
-.fa-times{
-    color: red;
-}
+		.line {
+			height: 1px;
+			background-color: #E0E0E0
+		}
 
-.fa-check{
-    color: green;
-}
+		.text-sm {
+			font-size: 14px
+		}
+	</style>
 
-.date {
-    background-color: #ccc
-}
-</style>
-
-<div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
-	<div class="card p-4">
-		<div class=" image d-flex flex-column justify-content-center align-items-center">
-			<button class="btn btn-secondary">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuhKCWUGyWAWug_sKmm_cmU6oSf-xgxGLYdQ&usqp=CAU" height="100" width="100"/></button>
-			<span class="name mt-3">{{ user.nom }} {{ user.prenom }}</span>
-			<span class="idd">@{{user.username}}</span>
-			<div class="d-flex flex-row justify-content-center align-items-center gap-2">
-				<span class="idd1">Administrateur</span>
-				<span>
-                    {% if user.isAdmin == true %}
-                        <i class="fas fa-check"></i>
-                    {% else %}
-                        <i class="fas fa-times"></i>
-                    {% endif %}
-				</span>
-			</div>
-			<div class="d-flex flex-row justify-content-center align-items-center mt-3">
-				<span class="number">16
-					<span class="follow">Sortie organisée</span>
-				</span>
-			</div>
-			<div class=" d-flex mt-2">
-				<button class="btn1 btn-dark">
-                    <a href="{{ path('utilisateur_update', {'id' : app.user.id} )}}" id="link_profil">Modifier le profil</a>
-                </button>
-			</div>
-			
-			<div class=" px-2 rounded mt-4 date ">
-				<span class="join">Nous à rejoint en Novembre 2021</span>
+	<div class="container-fluid px-4 py-5 mx-auto">
+		<div class="row d-flex justify-content-center">
+			<div class="card border-0">
+				<div class="row set-p justify-content-center">
+					<div>
+						<img id="first" class="image" src="https://i.imgur.com/3pcJdqF.jpg">
+						<img class="image" src="https://i.imgur.com/zFRM6Ww.jpg">
+						<img class="image active" src="https://i.imgur.com/oDSYIAB.jpg">
+						<img class="image" src="https://i.imgur.com/lfEnSRg.jpg">
+						<img id="last" class="image" src="https://i.imgur.com/gl9AZz0.jpg">
+					</div>
+					<span class="fa fa-angle-left" id="left"></span>
+					<span class="fa fa-angle-right" id="right"></span>
+					<div class="col-12">
+						<div class="row px-3">
+							<h3 class="font-weight-bold">{{ sortie.nom }}</h3>
+						</div>
+						<div class="row px-3">
+							<h5 class="mb-1">{{ sortie.infoSortie }}</h5>
+						</div>
+						<div class="row px-3">
+							<p class="mb-4">{{ sortie.infoSortie }}</p>
+						</div>
+						<div class="line"></div>
+						<div class="row px-3 mt-4">
+							<h5 class="text-secondary mb-1">Sky Suite</h5>
+						</div>
+						<div class="row px-3 mb-4">
+							<h2 class="text-success mb-1 font-weight-bold">$288<span class="ml-2 text-muted text-sm">+&nbsp; $14 taxes and charges</span>
+							</h2>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 {% endblock %}
