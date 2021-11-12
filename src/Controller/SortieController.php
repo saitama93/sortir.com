@@ -62,4 +62,16 @@ class SortieController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    /**
+     * Permet à l'utilisateur de faire une réservation
+     * 
+     * @Route("/reserver/{id}", name="reservation_new")
+     *
+     * @return void
+     */
+    public function reservation(Sortie $sortie){
+        $user = $this->getUser();
+        // $sortie->
+    }
 }

@@ -17,7 +17,7 @@
 
 				{% if app.user and app.user != sortie.organisateur  %} 
 
-					<a class="reserver hvr-icon-buzz">Je réserve 
+					<a href="{{ path('reservation_new', {'id' : sortie.id}) }}" class="reserver hvr-icon-buzz">Je réserve 
 					<i class="hvr-icon fas fa-exclamation-circle"></i></a>
 
 				{% endif %}
