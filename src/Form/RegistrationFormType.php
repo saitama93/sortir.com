@@ -7,8 +7,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use App\Entity\Site;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -20,7 +22,7 @@ class RegistrationFormType extends ApplicationType
     {
         $builder
             ->add('username', TextType::class, $this->getConfiguration("Username", "Veuillez saisir votre username",[
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Le username ne peut pas être vide',
@@ -61,6 +63,20 @@ class RegistrationFormType extends ApplicationType
             ->add('prenom', TextType::class, $this->getConfiguration("Prénom", "Saisir votre prénom",[
                 'required' => false
             ]))
+            ->add('siteRattachement', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Site::class,
+
+                'required'   => true,
+                'placeholder' => '- Choisir un site -',
+            
+                // uses the User.username property as the visible option string
+                'choice_label' => 'nom',
+            
+                // used to render a select box, check boxes or radios
+                // 'multiple' => true,
+                // 'expanded' => true,
+            ])
             ->add('isActif', CheckboxType::class, $this->getConfiguration("Cocher pour activer le compte", "" , [
                 'mapped' => true
             ]))

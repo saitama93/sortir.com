@@ -64,6 +64,11 @@ class Sortie
      */
     private $lieu;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Utilisateur::class, inversedBy="sorties")
+     */
+    private $organisateur;
+
     
 
     public function getId(): ?int
@@ -164,6 +169,18 @@ class Sortie
     public function setLieu(?Lieu $lieu): self
     {
         $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?Utilisateur
+    {
+        return $this->organisateur;
+    }
+
+    public function setOrganisateur(?Utilisateur $organisateur): self
+    {
+        $this->organisateur = $organisateur;
 
         return $this;
     }

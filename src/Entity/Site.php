@@ -31,9 +31,15 @@ class Site
      */
     private $sorties;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Utilisateur::class, mappedBy="siteRattachement")
+     */
+    private $utilisateurs;
+
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
+        $this->utilisateurs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,6 +83,36 @@ class Site
             // set the owning side to null (unless already changed)
             if ($sorty->getSite() === $this) {
                 $sorty->setSite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Utilisateur[]
+     */
+    public function getUtilisateurs(): Collection
+    {
+        return $this->utilisateurs;
+    }
+
+    public function addUtilisateur(Utilisateur $utilisateur): self
+    {
+        if (!$this->utilisateurs->contains($utilisateur)) {
+            $this->utilisateurs[] = $utilisateur;
+            $utilisateur->setSiteRattachement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUtilisateur(Utilisateur $utilisateur): self
+    {
+        if ($this->utilisateurs->removeElement($utilisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($utilisateur->getSiteRattachement() === $this) {
+                $utilisateur->setSiteRattachement(null);
             }
         }
 
