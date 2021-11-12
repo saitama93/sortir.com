@@ -70,7 +70,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Vous devez renseigner votre adresse mail")
      */
     private $isAdmin;
 
