@@ -24,16 +24,15 @@
     
     <body>
 
-
         {% if app.user and app.user.isAdmin == true %}
             {% include "admin/partials/_navbar.html.twig" %}
         {% else %}
             {% include "partials/_navbar.html.twig" %}        
         {% endif %}
        <section class="container">
-   {% block body %}
-   {% endblock body %}
-</section>
+            {% block body %}
+            {% endblock body %}
+        </section>
 
         {% include "partials/_footer.html.twig" %}
 

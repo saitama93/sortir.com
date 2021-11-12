@@ -85,13 +85,21 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="utilisateurs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $siteRattachement;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="participants")
+     */
+    private $sortiesParticipes;
+
+   
 
     public function __construct()
     {
         $this->sorties = new ArrayCollection();
+        $this->sortiesParticipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -291,4 +299,33 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getSortiesParticipes(): Collection
+    {
+        return $this->sortiesParticipes;
+    }
+
+    public function addSortiesParticipe(Sortie $sortiesParticipe): self
+    {
+        if (!$this->sortiesParticipes->contains($sortiesParticipe)) {
+            $this->sortiesParticipes[] = $sortiesParticipe;
+            $sortiesParticipe->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesParticipe(Sortie $sortiesParticipe): self
+    {
+        if ($this->sortiesParticipes->removeElement($sortiesParticipe)) {
+            $sortiesParticipe->removeParticipant($this);
+        }
+
+        return $this;
+    }
+
+    
 }
