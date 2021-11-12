@@ -23,7 +23,14 @@
 
     
     <body>
+        {# Message flash #}
 
+        {% for message in app.flashes('success') %}
+        	<div class="alert alert-success">
+        		{{ message }}
+        	</div>
+        {% endfor %}
+        
         {% if app.user and app.user.isAdmin == true %}
             {% include "admin/partials/_navbar.html.twig" %}
         {% else %}
