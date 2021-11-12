@@ -13,8 +13,7 @@
 
             <h3>{{ sortie.participants|length ~'/' ~ sortie.nbInscriptionsMax ~' participants'}}</h3>
 			<div class="test d-flex justify-content-between align-items-center">
-				<a href="google.com" class="more float-left hvr-icon-pulse-grow">En savoir
-					<i class="fas fa-plus-circle hvr-icon"></i>
+				<a href="{{ path('sortie_consultation', { 'id' : sortie.id}) }}" class="more float-left hvr-icon-pulse-grow">En savoir<i class="fas fa-plus-circle hvr-icon"></i>
 				</a>
 
 				{% if app.user and app.user != sortie.organisateur  %} 

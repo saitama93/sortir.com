@@ -26,8 +26,6 @@ class RegistrationFormType extends ApplicationType
                     new NotBlank([
                         'message' => 'Le username ne peut pas être vide',
                     ]),
-                    
-                    
                 ]
             ]))
             ->add('plainPassword',PasswordType::class, $this->getConfiguration("Mot de passe", "Rentrez votre mot de passe",  [

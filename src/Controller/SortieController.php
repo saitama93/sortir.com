@@ -24,6 +24,16 @@ class SortieController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/sortie/{id}", name="sortie_consultation")
+     */
+    public function getSortie(Sortie $sortie): Response
+    {
+        return $this->render('sortie/consultation.html.twig', [
+            'sortie' => $sortie
+        ]);
+    }
+
 
      /**
      * @Route("/ajoutSortie", name="sortie_new", methods={"GET","POST"})
@@ -53,5 +63,15 @@ class SortieController extends AbstractController
         ]);
     }
 
-   
+    /**
+     * Permet à l'utilisateur de faire une réservation
+     * 
+     * @Route("/reserver/{id}", name="reservation_new")
+     *
+     * @return void
+     */
+    public function reservation(Sortie $sortie){
+        $user = $this->getUser();
+        // $sortie->
+    }
 }
