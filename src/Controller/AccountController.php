@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Form\RegistrationFormType;
+use App\Form\UpdateAccountForm;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,13 +26,13 @@ class AccountController extends AbstractController
      */
     public function update(Request $request, Utilisateur $utilisateur): Response
     {
-        $form = $this->createForm(RegistrationFormType::class, $utilisateur);
+        $form = $this->createForm(UpdateAccountForm::class, $utilisateur);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_profil', array('id' => $utilisateur->getId()));
         }
 
         return $this->render('utilisateur/update.html.twig', [
