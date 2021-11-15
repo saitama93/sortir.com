@@ -32,7 +32,7 @@
 				{% endif %}
 				{% if  app.user and app.user == sortie.organisateur %}
 
-					<a  class="modifier hvr-icon-spin float-right">Modifier l'annonce
+					<a href="{{ path('sortie_edit', {'id' : sortie.id}) }}" class="modifier hvr-icon-spin float-right">Modifier l'annonce
 					<i class="hvr-icon fas fa-cog"></i>
 					</a>
 
