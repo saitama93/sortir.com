@@ -106,4 +106,33 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('home');
         }
     }
+
+    /**
+     * Permet de se désinscrire d'une sortie
+     * @Route("/désinscrire/{id}", name="desinscription")
+     *
+     * @param Sortie $sortie
+     * @param EntityManagerInterface $em
+     * @return void
+     */
+    public function desinscription(Sortie $sortie, EntityManagerInterface $em){
+        $user = $this->getUser();
+        if ($sortie->getParticipants()->contains($user)) {
+            $sortie->removeParticipant($user);
+            $this->addFlash(
+                'success',
+                "Vous êtes désinscrit de la sortie"
+            );
+
+            $em->persist($sortie);
+            $em->flush();
+            return $this->redirectToRoute('home');
+        }else{
+            $this->addFlash(
+                'danger',
+                "Vous n'êtes pas inscrit à cette sortie"
+            );
+            return $this->redirectToRoute('home');
+        }
+    }
 }
