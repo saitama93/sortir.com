@@ -17,20 +17,44 @@
     <span class="sr-only">Loading...</span>
   </div>
 
-  {{ form_row(form.q) }}
 
+  <div class="row  mt-5 mb-3">
+                <!--La classe bg-info ajoute un fond bleu à l'élément-->
+                <div class="col"> 
+				
+				{{ form_row(form.q) }}
+				</div>
+
+                <!--La classe bg-warning ajoute un fond jaune à l'élément-->
+                <div class="col">
+				
+				 {{ form_row(form.sites) }}
+				</div>
+                <!--La classe bg-success ajoute un fond vert à l'élément-->
+                <div class="col">
+				
+				{{ form_row(form.participant) }}
+				{{ form_row(form.organisateur) }}
+				
+				</div>
+
+				<div class="col">
+				
+				<button type="submit" class="btn btn-primary w-100">Filtrer</button>
+				
+				</div>
+</div>
+
+ 
   
-  {{ form_row(form.sites) }}
+ 
 
   
 
  
-  {{ form_row(form.participant) }}
-
   
-  {{ form_row(form.organisateur) }}
 
-<button type="submit" class="btn btn-primary w-100">Filtrer</button>
+
 
 {{ form_end(form) }}
 
@@ -39,19 +63,50 @@
 
 	 <h1 class="text-center mt-5 mb-3">Sorties</h1>
 
-		<div class="row">
+		{# <div class="row">
 			<span class="mb-3">
 				<a  class="plus-recherche hvr-icon-wobble-horizontal">Recherche avancée <i class="fas fa-search-plus hvr-icon"></i></a>
 			</span>
-		</div>
+		</div> #}
 
-
+<script>
+var sorties = new Array();
+</script>
 		<div class="row">
 			{% for sortie in sorties %}
 				{% include "sortie/_sortieTemplate.html.twig" %}
 			{% endfor %}
 		</div>
 
+<script>
+sorties.forEach((item, index) => {
+  console.log(item) //value
+  console.log(index) //index
+})
+var upgradeTime = 172801;
+var seconds = upgradeTime;
+function timer() {
+  var days        = Math.floor(seconds/24/60/60);
+  var hoursLeft   = Math.floor((seconds) - (days*86400));
+  var hours       = Math.floor(hoursLeft/3600);
+  var minutesLeft = Math.floor((hoursLeft) - (hours*3600));
+  var minutes     = Math.floor(minutesLeft/60);
+  var remainingSeconds = seconds % 60;
+  function pad(n) {
+    return (n < 10 ? "0" + n : n);
+  }
 
+  countDown = "countDown";
+  document.getElementById(countDown).innerHTML = pad(days) + ":" + pad(hours) + ":" + pad(minutes) + ":" + pad(remainingSeconds);
+  if (seconds == 0) {
+    clearInterval(countdownTimer);
+    document.getElementById(countDown).innerHTML = "Completed";
+  } else {
+    seconds--;
+  }
+}
+var countdownTimer = setInterval('timer()', 1000);
+</script>
 
 {% endblock %}
+
