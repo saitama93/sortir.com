@@ -27,8 +27,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="Vous devez renseigner votre username")
+     * @ORM\Column(type="string", length=180, unique=true)
+     * 
      */
     private $username;
 
@@ -69,7 +70,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Vous devez renseigner votre adresse mail")
      */
     private $isAdmin;
 

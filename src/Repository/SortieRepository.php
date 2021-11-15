@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\Entity\Utilisateur;
+use App\Data\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +19,48 @@ class SortieRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
+    }
+
+
+    public function findSearch(SearchData $search, Utilisateur $user)
+    {
+
+        $query = $this
+            ->createQueryBuilder('sortie')
+            ->select('participants','organisateur', 'sortie')
+            ->leftjoin('sortie.participants', 'participants')
+            ->leftjoin('sortie.organisateur', 'organisateur');
+
+            
+        if (!empty($search->q)) {
+            $query = $query
+                ->andWhere('sortie.nom LIKE :q')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+
+        if (!empty($search->sites)) {
+            $query = $query
+                ->andWhere('sortie.site = :site')
+                ->setParameter('site', $search->sites);
+        }
+       
+
+        if (!empty($search->participant)) {
+            $query = $query
+                ->andwhere(':user MEMBER OF sortie.participants')
+                ->setParameter('user', $user);
+        }
+
+        if (!empty($search->organisateur)) {
+            $query = $query
+                ->orwhere(':user = organisateur')
+                ->setParameter('user', $user);
+        }
+
+    
+
+        return $query->getQuery()->getResult();
     }
 
     // /**
