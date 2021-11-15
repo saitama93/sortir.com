@@ -10,14 +10,13 @@
 			color: #000;
 			overflow-x: hidden;
 			height: 100%;
-			background-color: #E1BEE7;
 			background-repeat: no-repeat
 		}
 
-		.card {
-			width: 590px;
+		.cardSortie {
+			width: 100%;
 			border-radius: 10px;
-			box-shadow: 0 4px 8px 0 #AA00FF;
+			box-shadow: 0 4px 8px 0 #9F9F9F;
 			margin-top: 50px;
 			margin-bottom: 50px
 		}
@@ -40,16 +39,8 @@
 			left: 2%
 		}
 
-		#left:hover {
-			color: #E0E0E0
-		}
-
 		#right {
 			right: 2%
-		}
-
-		#right:hover {
-			color: #E0E0E0
 		}
 
 		.image {
@@ -79,7 +70,6 @@
 
 		.line {
 			height: 1px;
-			background-color: #E0E0E0
 		}
 
 		.text-sm {
@@ -89,38 +79,53 @@
 
 	<div class="container-fluid px-4 py-5 mx-auto">
 		<div class="row d-flex justify-content-center">
-			<div class="card border-0">
+			<div class="cardSortie border-0">
 				<div class="row set-p justify-content-center">
-					<div>
-						<img id="first" class="image" src="https://i.imgur.com/3pcJdqF.jpg">
-						<img class="image" src="https://i.imgur.com/zFRM6Ww.jpg">
-						<img class="image active" src="https://i.imgur.com/oDSYIAB.jpg">
-						<img class="image" src="https://i.imgur.com/lfEnSRg.jpg">
-						<img id="last" class="image" src="https://i.imgur.com/gl9AZz0.jpg">
-					</div>
-					<span class="fa fa-angle-left" id="left"></span>
-					<span class="fa fa-angle-right" id="right"></span>
 					<div class="col-12">
 						<div class="row px-3">
 							<h3 class="font-weight-bold">{{ sortie.nom }}</h3>
 						</div>
 						<div class="row px-3">
+							<h3 class="font-weight-bold">à
+								{{ sortie.site.nom }}
+							</h3>
+						</div>
+						<div class="row px-3">
 							<h5 class="mb-1">{{ sortie.infoSortie }}</h5>
 						</div>
 						<div class="row px-3">
-							<p class="mb-4">{{ sortie.infoSortie }}</p>
+							<p class="mb-4">Réservé au site de
+								{{ sortie.site.nom }}
+							</p>
+						</div>
+						<div class="row px-3">
+							<p class="mb-4">Sortie organisée par
+								{{ sortie.organisateur.username }}</p>
 						</div>
 						<div class="line"></div>
 						<div class="row px-3 mt-4">
-							<h5 class="text-secondary mb-1">Sky Suite</h5>
+							<h5 class="text-secondary mb-1">Du
+								{{ sortie.dateHeureDebut | date('d/m/Y à H:i') }}
+								au
+								{{ sortie.dateHeureFin | date('d/m/Y à H:i') }}</h5>
 						</div>
 						<div class="row px-3 mb-4">
-							<h2 class="text-success mb-1 font-weight-bold">$288<span class="ml-2 text-muted text-sm">+&nbsp; $14 taxes and charges</span>
-							</h2>
+							<h2 class="ml-2 text-muted text-sm"></h2>
+							<span class="ml-2 text-muted text-sm">Fin des inscriptions le
+								{{ sortie.dateLimiteInscription | date('d/m/Y à H:i') }}</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<h3>{{ sortie.participants|length ~'/' ~ sortie.nbInscriptionsMax ~' participants'}}</h3>
+
+	<div class="row">
+		{% for participant in sortie.participants %}
+				{% include "sortie/_participantTemplate.html.twig" %}
+		{% endfor %}
+	</div>
+
 {% endblock %}
