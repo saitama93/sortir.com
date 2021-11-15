@@ -92,31 +92,32 @@
 			<div class="card border-0">
 				<div class="row set-p justify-content-center">
 					<div>
-						<img id="first" class="image" src="https://i.imgur.com/3pcJdqF.jpg">
-						<img class="image" src="https://i.imgur.com/zFRM6Ww.jpg">
 						<img class="image active" src="https://i.imgur.com/oDSYIAB.jpg">
-						<img class="image" src="https://i.imgur.com/lfEnSRg.jpg">
-						<img id="last" class="image" src="https://i.imgur.com/gl9AZz0.jpg">
 					</div>
-					<span class="fa fa-angle-left" id="left"></span>
-					<span class="fa fa-angle-right" id="right"></span>
 					<div class="col-12">
 						<div class="row px-3">
 							<h3 class="font-weight-bold">{{ sortie.nom }}</h3>
 						</div>
 						<div class="row px-3">
+							<h3 class="font-weight-bold">à </h3>
+						</div>
+						<div class="row px-3">
 							<h5 class="mb-1">{{ sortie.infoSortie }}</h5>
 						</div>
 						<div class="row px-3">
-							<p class="mb-4">{{ sortie.infoSortie }}</p>
+							<p class="mb-4">Réservé au site de </p>
+						</div>
+						<div class="row px-3">
+							<p class="mb-4">Sortie organisée par </p>
 						</div>
 						<div class="line"></div>
 						<div class="row px-3 mt-4">
-							<h5 class="text-secondary mb-1">Sky Suite</h5>
+							<h5 class="text-secondary mb-1">Du {{ sortie.dateHeureDebut | date('d/m/Y à H:i') }} au {{ sortie.dateHeureFin | date('d/m/Y à H:i') }}</h5>
 						</div>
 						<div class="row px-3 mb-4">
-							<h2 class="text-success mb-1 font-weight-bold">$288<span class="ml-2 text-muted text-sm">+&nbsp; $14 taxes and charges</span>
+							<h2 class="ml-2 text-muted text-sm">
 							</h2>
+							<span class="ml-2 text-muted text-sm">Fin des inscriptions le {{ sortie.dateLimiteInscription | date('d/m/Y à H:i') }}</span>
 						</div>
 					</div>
 				</div>
