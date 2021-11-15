@@ -17,20 +17,44 @@
     <span class="sr-only">Loading...</span>
   </div>
 
-  {{ form_row(form.q) }}
 
+  <div class="row  mt-5 mb-3">
+                <!--La classe bg-info ajoute un fond bleu à l'élément-->
+                <div class="col"> 
+				
+				{{ form_row(form.q) }}
+				</div>
+
+                <!--La classe bg-warning ajoute un fond jaune à l'élément-->
+                <div class="col">
+				
+				 {{ form_row(form.sites) }}
+				</div>
+                <!--La classe bg-success ajoute un fond vert à l'élément-->
+                <div class="col">
+				
+				{{ form_row(form.participant) }}
+				{{ form_row(form.organisateur) }}
+				
+				</div>
+
+				<div class="col">
+				
+				<button type="submit" class="btn btn-primary w-100">Filtrer</button>
+				
+				</div>
+</div>
+
+ 
   
-  {{ form_row(form.sites) }}
+ 
 
   
 
  
-  {{ form_row(form.participant) }}
-
   
-  {{ form_row(form.organisateur) }}
 
-<button type="submit" class="btn btn-primary w-100">Filtrer</button>
+
 
 {{ form_end(form) }}
 
