@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
+        <link rel="stylesheet" href="">
 
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
@@ -24,6 +24,12 @@
     
     <body>
         {# Message flash #}
+        
+        {% if app.user and app.user.isAdmin == true %}
+            {% include "admin/partials/_navbar.html.twig" %}
+        {% else %}
+            {% include "partials/_navbar.html.twig" %}        
+        {% endif %}
 
         {% for label, messages in app.flashes %}
         
@@ -35,12 +41,6 @@
         		</div>
         	</div>
         {% endfor %}
-        
-        {% if app.user and app.user.isAdmin == true %}
-            {% include "admin/partials/_navbar.html.twig" %}
-        {% else %}
-            {% include "partials/_navbar.html.twig" %}        
-        {% endif %}
        <section class="container">
             {% block body %}
             {% endblock body %}
