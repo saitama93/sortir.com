@@ -31,7 +31,13 @@ class SortieRepository extends ServiceEntityRepository
             ->createQueryBuilder('sortie')
             ->select('participants','organisateur', 'sortie')
             ->leftjoin('sortie.participants', 'participants')
-            ->leftjoin('sortie.organisateur', 'organisateur');
+            ->leftjoin('sortie.organisateur', 'organisateur')
+            ->leftjoin('sortie.etat', 'etat');
+
+
+
+
+
             $date= new DateTime('NOW');
             if (!empty($search->passee)) {
                 $query = $query
@@ -41,6 +47,9 @@ class SortieRepository extends ServiceEntityRepository
             } else{
                 $query = $query
                 ->andWhere('sortie.dateHeureDebut >= :now')
+                ->andWhere('etat.id > 1 ')
+                ->orWhere('organisateur = :user')
+                ->setParameter('user', $user)
                 ->setParameter('now', $date->add(new DateInterval('PT1H')));
             }
 
