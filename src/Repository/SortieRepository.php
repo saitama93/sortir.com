@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use DateTime;
+use DateInterval;
 use App\Entity\Utilisateur;
 use App\Data\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -30,8 +32,19 @@ class SortieRepository extends ServiceEntityRepository
             ->select('participants','organisateur', 'sortie')
             ->leftjoin('sortie.participants', 'participants')
             ->leftjoin('sortie.organisateur', 'organisateur');
+            $date= new DateTime('NOW');
+            if (!empty($search->passee)) {
+                $query = $query
+                    ->andWhere('sortie.dateHeureDebut < :now')
+                    ->setParameter('now', $date->add(new DateInterval('PT1H')));
+                    
+            } else{
+                $query = $query
+                ->andWhere('sortie.dateHeureDebut >= :now')
+                ->setParameter('now', $date->add(new DateInterval('PT1H')));
+            }
 
-            
+
         if (!empty($search->q)) {
             $query = $query
                 ->andWhere('sortie.nom LIKE :q')
@@ -76,13 +89,13 @@ class SortieRepository extends ServiceEntityRepository
 
         if (!empty($search->nonparticipant)) {
             $query = $query
-                ->orWhere(':user NOT MEMBER OF sortie.participants AND :user != organisateur')
+                ->andWhere(':user NOT MEMBER OF sortie.participants AND :user != organisateur')
                 ->setParameter('user', $user);
         }
 
         if (!empty($search->organisateur)) {
             $query = $query
-                ->orwhere(':user = organisateur')
+                ->andWhere(':user = organisateur')
                 ->setParameter('user', $user);
         }
 
