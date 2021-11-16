@@ -77,7 +77,7 @@ class SortieController extends AbstractController
         if($utilisateur != $organisateur){
             $this->addFlash(
                 'danger',
-                "Impossible de modifier une sortie dont vous n'êtes pas l'organisateur"
+                "Impossible de modifier une sortie dont vous n'êtes pas l'organisateur."
             );
             return $this->redirectToRoute('home');
         }
@@ -129,7 +129,7 @@ class SortieController extends AbstractController
             if ($sortie->getDateLimiteInscription() < new DateTime("now")) {
                 $this->addFlash(
                     'danger',
-                    "Vous avez dépassé la date limite d'inscription pour cette sortie"
+                    "Vous avez dépassé la date limite d'inscription pour cette sortie."
                 );
                 return $this->redirectToRoute('home');
             }else{
@@ -139,14 +139,14 @@ class SortieController extends AbstractController
     
                 $this->addFlash(
                     'success',
-                    "Votre réservation à bien été prise en compte"
+                    "Votre réservation a bien été prise en compte."
                 );
                 return $this->redirectToRoute('home');
             }
         }else{
             $this->addFlash(
                 'danger',
-                "Il n'y a plus de place pour de disponible pour cette sortie" 
+                "Il n'y a plus de place disponible pour cette sortie." 
             );
             return $this->redirectToRoute('home');
         }
@@ -175,7 +175,7 @@ class SortieController extends AbstractController
         }else{
             $this->addFlash(
                 'danger',
-                "Vous n'êtes pas inscrit à cette sortie"
+                "Vous n'êtes pas inscrit à cette sortie."
             );
             return $this->redirectToRoute('home');
         }
