@@ -23,18 +23,22 @@
                 <div class="col"> 
 				
 				{{ form_row(form.q) }}
+        {{ form_row(form.debut) }}
 				</div>
 
                 <!--La classe bg-warning ajoute un fond jaune à l'élément-->
                 <div class="col">
 				
 				 {{ form_row(form.sites) }}
+         	{{ form_row(form.fin) }}
 				</div>
                 <!--La classe bg-success ajoute un fond vert à l'élément-->
                 <div class="col">
 				
 				{{ form_row(form.participant) }}
 				{{ form_row(form.organisateur) }}
+        	{{ form_row(form.nonparticipant) }}
+          	{{ form_row(form.passee) }}
 				
 				</div>
 

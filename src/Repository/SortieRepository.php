@@ -39,6 +39,28 @@ class SortieRepository extends ServiceEntityRepository
         }
 
 
+        if (!empty($search->debut) && !empty($search->fin) ) {
+            $query = $query
+                ->andWhere('sortie.dateHeureDebut BETWEEN :debut AND :fin')
+                ->andWhere('sortie.dateHeureFin BETWEEN :debut AND :fin')
+                ->setParameter('debut', $search->debut)
+                ->setParameter('fin', $search->fin);
+        }
+
+        else{
+            if(!empty($search->debut)){
+                $query = $query
+                ->andWhere('sortie.dateHeureDebut >= :debut')
+                ->setParameter('debut', $search->debut);
+            }
+            if(!empty($search->fin)){
+                $query = $query
+                ->andWhere('sortie.dateHeurFin <= :fin')
+                ->setParameter('fin', $search->fin);
+            }
+        }
+
+
         if (!empty($search->sites)) {
             $query = $query
                 ->andWhere('sortie.site = :site')
@@ -48,7 +70,13 @@ class SortieRepository extends ServiceEntityRepository
 
         if (!empty($search->participant)) {
             $query = $query
-                ->andwhere(':user MEMBER OF sortie.participants')
+                ->andwhere(':user MEMBER OF sortie.participants AND :user != organisateur ')
+                ->setParameter('user', $user);
+        }
+
+        if (!empty($search->nonparticipant)) {
+            $query = $query
+                ->orWhere(':user NOT MEMBER OF sortie.participants AND :user != organisateur')
                 ->setParameter('user', $user);
         }
 
