@@ -95,13 +95,13 @@ class SortieController extends AbstractController
 
             $this->addFlash(
                 'success',
-                "Votre réservation à bien été prise en compte"
+                "Votre réservation a bien été prise en compte."
             );
             return $this->redirectToRoute('home');
         }else{
             $this->addFlash(
                 'danger',
-                "Il n'y a plus de place pour de disponible pour cette sortie" 
+                "Il n'y a plus de place disponible pour cette sortie." 
             );
             return $this->redirectToRoute('home');
         }

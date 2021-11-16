@@ -77,14 +77,16 @@
 		}
 	</style>
 
+
+	<div class="row">
+		<h1 class="font-weight-bold text-center">{{ sortie.nom }}</h1>
+	</div>
+
 	<div class="container-fluid px-4 py-5 mx-auto">
 		<div class="row d-flex justify-content-center">
 			<div class="cardSortie border-0">
 				<div class="row set-p justify-content-center">
 					<div class="col-12">
-						<div class="row px-3">
-							<h3 class="font-weight-bold">{{ sortie.nom }}</h3>
-						</div>
 						<div class="row px-3">
 							<h3 class="font-weight-bold">à
 								{{ sortie.site.nom }}
@@ -124,7 +126,7 @@
 
 	<div class="row">
 		{% for participant in sortie.participants %}
-				{% include "sortie/_participantTemplate.html.twig" %}
+			{% include "sortie/_participantTemplate.html.twig" %}
 		{% endfor %}
 	</div>
 

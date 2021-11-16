@@ -41,12 +41,12 @@ class SearchForm extends AbstractType
             ])
 
             ->add('participant', CheckboxType::class, [
-                'label' => 'Sorties où je participe',
+                'label' => 'Sorties auxquelles je participe',
                 'required' => false,
             ])
 
             ->add('participant', CheckboxType::class, [
-                'label' => 'Sorties où je ne participe pas',
+                'label' => 'Sorties auxuqelles je ne participe pas',
                 'required' => false,
             ])
         ;
