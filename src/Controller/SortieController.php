@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Sortie;
 use App\Entity\Utilisateur;
+use DateTime;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -65,6 +66,44 @@ class SortieController extends AbstractController
     }
 
     /**
+     * @Route("modifierSortie/{id}", name="sortie_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Sortie $sortie): Response
+    {
+
+        $utilisateur =$this->getUser();
+        $organisateur = $sortie->getOrganisateur();
+
+        if($utilisateur != $organisateur){
+            $this->addFlash(
+                'danger',
+                "Impossible de modifier une sortie dont vous n'êtes pas l'organisateur"
+            );
+            return $this->redirectToRoute('home');
+        }
+
+        else{
+
+       
+
+        $form = $this->createForm(SortieType::class, $sortie);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('sortie/edit.html.twig', [
+            'sortie' => $sortie,
+            'form' => $form,
+        ]);
+
+    }
+    }
+
+    /**
      * Permet à l'utilisateur de faire une réservation
      * 
      * @Route("/reserver/{id}", name="reservation_new")
@@ -74,9 +113,7 @@ class SortieController extends AbstractController
     public function reservation(Sortie $sortie, EntityManagerInterface $em){
         $user = $this->getUser();
         $verif = null;
-        // dd($user);
         $nbParticipants = count($sortie->getParticipants());
-        // dd($nbParticipants);
 
         // On vérifie si l'utilisateur participe déjà la sortie
         foreach ($sortie->getParticipants() as $participant) {
@@ -89,19 +126,27 @@ class SortieController extends AbstractController
 
         //On vérifie  si il rest une place de libre pour cette sortie
         if ($nbParticipants < $sortie->getNbInscriptionsMax()) {
-            $sortie->addParticipant($user);
-            $em->persist($sortie);
-            $em->flush();
-
-            $this->addFlash(
-                'success',
-                "Votre réservation a bien été prise en compte."
-            );
-            return $this->redirectToRoute('home');
+            if ($sortie->getDateLimiteInscription() < new DateTime("now")) {
+                $this->addFlash(
+                    'danger',
+                    "Vous avez dépassé la date limite d'inscription pour cette sortie"
+                );
+                return $this->redirectToRoute('home');
+            }else{
+                $sortie->addParticipant($user);
+                $em->persist($sortie);
+                $em->flush();
+    
+                $this->addFlash(
+                    'success',
+                    "Votre réservation à bien été prise en compte"
+                );
+                return $this->redirectToRoute('home');
+            }
         }else{
             $this->addFlash(
                 'danger',
-                "Il n'y a plus de place disponible pour cette sortie." 
+                "Il n'y a plus de place pour de disponible pour cette sortie" 
             );
             return $this->redirectToRoute('home');
         }
