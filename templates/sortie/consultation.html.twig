@@ -119,18 +119,24 @@
 								{{ sortie.etat.libelle }}</span>
 						</div>
 						<div class="row px-3 mb-4">
-							{% if (app.user == sortie.organisateur or user.isAdmin == true) and sortie.etat.id == 1 %}
+							{% if (app.user == sortie.organisateur or app.user.isAdmin == true) and sortie.etat.id == 1 %}
 								<a href="{{ path('publier', { 'id' : sortie.id }) }}">
 									<button type="button" class="btn btn-primary">
 										Publier la sortie
 									</button>
 								</a>
 							{% endif %}
-							{% if (app.user == sortie.organisateur or user.isAdmin == true) and sortie.etat.id == 2 %}
+							{% if (app.user == sortie.organisateur or app.user.isAdmin == true) and sortie.etat.id == 2 %}
 								<a href="{{ path('sortie_annuler', { 'id' : sortie.id }) }}">
 									<button type="button" class="btn btn-danger">
 										Annuler la sortie
 									</button>
+								</a>
+							{% endif %}
+							{#   and sortie.dateLimiteInscription > date('+1hours') and if sortie.etat.id == 2 and if app.user not in sortie.participants #}
+							{% if app.user and app.user != sortie.organisateur and sortie.etat.id == 2 and app.user not in sortie.participants and sortie.dateLimiteInscription > date('+1hours') %}
+								<a href="{{ path('reservation_new', {'id' : sortie.id}) }}" class="reserver hvr-icon-buzz">
+									<button type="button" class="btn btn-dark">Participer</button>
 								</a>
 							{% endif %}
 						</div>
