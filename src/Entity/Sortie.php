@@ -40,7 +40,7 @@ class Sortie
 
     /**
      * @ORM\Column(type="integer")
-     *  @Assert\GreaterThan(0,  message="Le nombre d'inscription minimum doit être de 1.")
+     *  @Assert\GreaterThan(0,  message="Le nombre d'inscriptions minimum doit être de 1.")
      */
     private $nbInscriptionsMax;
 
@@ -75,6 +75,16 @@ class Sortie
      * @ORM\ManyToMany(targetEntity=Utilisateur::class, inversedBy="sortiesParticipes")
      */
     private $participants;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Etat::class, inversedBy="sorties")
+     */
+    private $etat;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $motifAnnulation;
 
    
 
@@ -220,6 +230,30 @@ class Sortie
     public function removeParticipant(Utilisateur $participant): self
     {
         $this->participants->removeElement($participant);
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getMotifAnnulation(): ?string
+    {
+        return $this->motifAnnulation;
+    }
+
+    public function setMotifAnnulation(?string $motifAnnulation): self
+    {
+        $this->motifAnnulation = $motifAnnulation;
 
         return $this;
     }

@@ -37,4 +37,23 @@ class SearchData
      */
     public $nonparticipant = false;
 
+
+
+     /**
+     * @var boolean
+     */
+    public $passee = false;
+
+
+     /**
+     * @var DateTime
+     */
+    public $debut = null;
+
+
+    /**
+     * @var DateTime
+     */
+    public $fin = null;
+
 }

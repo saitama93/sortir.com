@@ -93,10 +93,10 @@
 							</h3>
 						</div>
 						<div class="row px-3">
-							<h5 class="mb-1">{{ sortie.infoSortie }}</h5>
+							<h5 class="mb-2">{{ sortie.infoSortie }}</h5>
 						</div>
 						<div class="row px-3">
-							<p class="mb-4">Réservé au site de
+							<p class="mb-2">Réservé au site de
 								{{ sortie.site.nom }}
 							</p>
 						</div>
@@ -105,7 +105,7 @@
 								{{ sortie.organisateur.username }}</p>
 						</div>
 						<div class="line"></div>
-						<div class="row px-3 mt-4">
+						<div class="row px-3">
 							<h5 class="text-secondary mb-1">Du
 								{{ sortie.dateHeureDebut | date('d/m/Y à H:i') }}
 								au
@@ -114,7 +114,25 @@
 						<div class="row px-3 mb-4">
 							<h2 class="ml-2 text-muted text-sm"></h2>
 							<span class="ml-2 text-muted text-sm">Fin des inscriptions le
-								{{ sortie.dateLimiteInscription | date('d/m/Y à H:i') }}</span>
+								{{ sortie.dateLimiteInscription | date('d/m/Y à H:i') }}
+								- Sortie
+								{{ sortie.etat.libelle }}</span>
+						</div>
+						<div class="row px-3 mb-4">
+							{% if (app.user == sortie.organisateur or user.isAdmin == true) and sortie.etat.id == 1 %}
+								<a href="{{ path('publier', { 'id' : sortie.id }) }}">
+									<button type="button" class="btn btn-primary">
+										Publier la sortie
+									</button>
+								</a>
+							{% endif %}
+							{% if (app.user == sortie.organisateur or user.isAdmin == true) and sortie.etat.id == 2 %}
+								<a href="{{ path('sortie_annuler', { 'id' : sortie.id }) }}">
+									<button type="button" class="btn btn-danger">
+										Annuler la sortie
+									</button>
+								</a>
+							{% endif %}
 						</div>
 					</div>
 				</div>

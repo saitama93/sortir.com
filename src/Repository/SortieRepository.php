@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use DateTime;
+use DateInterval;
 use App\Entity\Utilisateur;
 use App\Data\SearchData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -29,13 +31,55 @@ class SortieRepository extends ServiceEntityRepository
             ->createQueryBuilder('sortie')
             ->select('participants','organisateur', 'sortie')
             ->leftjoin('sortie.participants', 'participants')
-            ->leftjoin('sortie.organisateur', 'organisateur');
+            ->leftjoin('sortie.organisateur', 'organisateur')
+            ->leftjoin('sortie.etat', 'etat');
 
-            
+
+
+
+
+            $date= new DateTime('NOW');
+            if (!empty($search->passee)) {
+                $query = $query
+                    ->andWhere('sortie.dateHeureDebut < :now')
+                    ->setParameter('now', $date->add(new DateInterval('PT1H')));
+                    
+            } else{
+                $query = $query
+                ->andWhere('sortie.dateHeureDebut >= :now')
+                ->andWhere('etat.id > 1 ')
+                ->orWhere('organisateur = :user')
+                ->setParameter('user', $user)
+                ->setParameter('now', $date->add(new DateInterval('PT1H')));
+            }
+
+
         if (!empty($search->q)) {
             $query = $query
                 ->andWhere('sortie.nom LIKE :q')
                 ->setParameter('q', "%{$search->q}%");
+        }
+
+
+        if (!empty($search->debut) && !empty($search->fin) ) {
+            $query = $query
+                ->andWhere('sortie.dateHeureDebut BETWEEN :debut AND :fin')
+                ->andWhere('sortie.dateHeureFin BETWEEN :debut AND :fin')
+                ->setParameter('debut', $search->debut)
+                ->setParameter('fin', $search->fin);
+        }
+
+        else{
+            if(!empty($search->debut)){
+                $query = $query
+                ->andWhere('sortie.dateHeureDebut >= :debut')
+                ->setParameter('debut', $search->debut);
+            }
+            if(!empty($search->fin)){
+                $query = $query
+                ->andWhere('sortie.dateHeurFin <= :fin')
+                ->setParameter('fin', $search->fin);
+            }
         }
 
 
@@ -48,13 +92,19 @@ class SortieRepository extends ServiceEntityRepository
 
         if (!empty($search->participant)) {
             $query = $query
-                ->andwhere(':user MEMBER OF sortie.participants')
+                ->andwhere(':user MEMBER OF sortie.participants AND :user != organisateur ')
+                ->setParameter('user', $user);
+        }
+
+        if (!empty($search->nonparticipant)) {
+            $query = $query
+                ->andWhere(':user NOT MEMBER OF sortie.participants AND :user != organisateur')
                 ->setParameter('user', $user);
         }
 
         if (!empty($search->organisateur)) {
             $query = $query
-                ->orwhere(':user = organisateur')
+                ->andWhere(':user = organisateur')
                 ->setParameter('user', $user);
         }
 
