@@ -98,7 +98,12 @@
 			<div class="card bg-light mb-3">
 				<div class=" image d-flex flex-column align-items-center">
 					<button class="btn btn-secondary">
-						<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuhKCWUGyWAWug_sKmm_cmU6oSf-xgxGLYdQ&usqp=CAU" height="100" width="100"/></button>
+						{% if participant.fileName != null %}
+							<img src="{{ vich_uploader_asset(participant, 'profilImage') }}" alt="Image de  {{ participant.prenom }}" height="100" width="100">
+						{% else %}
+							<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuhKCWUGyWAWug_sKmm_cmU6oSf-xgxGLYdQ&usqp=CAU" height="100" width="100"/>
+						{% endif %}
+						</button>
 					<span class="name mt-3">{{ participant.nom }}
 						{{ participant.prenom }}</span>
 					<span class="idd">@{{participant.username}}</span>

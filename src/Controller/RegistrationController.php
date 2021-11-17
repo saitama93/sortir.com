@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,41 +18,37 @@ class RegistrationController extends AbstractController
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
     {
-
-
         $user = new Utilisateur();
         
-    
         $user->setIsActif(true);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $u =  $form->get('username')->getData();
-          
-
-            
-            $isAdmin = $form->get('isAdmin')->getData();
-            $isActif = $form->get('isActif')->getData();
             // Attribution du rôle admin
-
+            $isAdmin = $form->get('isAdmin')->getData();
             if ($isAdmin === true) {
                 $user->setRoles(['ROLE_ADMIN']);
             }
-            // encode the plain password
+            // encodage du plainPassword
             $user->setPassword(
             $userPasswordHasherInterface->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setUpdatedAt(new DateTime("now"));
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
-
+            
+            // Message flash
+            $this->addFlash(
+                'success', 
+                "L'utilisateur {$user->getPrenom()} est crée."
+            );
             return $this->redirectToRoute('home');
         
         }
@@ -59,10 +56,5 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
-
-    
-
-    
     }
-
 }

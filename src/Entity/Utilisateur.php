@@ -2,18 +2,22 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
+ * @Vich\Uploadable()
  * @ApiResource()
  * @UniqueEntity(fields={"username"}, message="Ce username est déjà utilisé veuillez en choisir un autre")
  */
@@ -93,6 +97,25 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="participants")
      */
     private $sortiesParticipes;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $filename;
+
+    /**
+     * Correspond à l'imagé de profile uploadé
+     * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
+     *
+     * @var File|null
+     */
+    private $profilImage;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
    
 
@@ -327,5 +350,54 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    public function setFilename(?string $filename): self
+    {
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * Get correspond à l'imagé uploadé
+     *
+     * @return  File|null
+     */
+    public function getProfilImage()
+    {
+        return $this->profilImage;
+    }
+
+    /**
+     * Set correspond à l'imagé uploadé
+     *
+     * @param  File|null  $imageFile  Correspond à l'imagé uploadé
+     *
+     * @return  self
+     */
+    public function setProfilImage($image)
+    {
+        $this->profilImage = $image;
+
+        if ($image) {
+            $this->updatedAt = new DateTime("now");
+        }
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 }

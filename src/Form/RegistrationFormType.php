@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -74,6 +75,9 @@ class RegistrationFormType extends ApplicationType
                 // 'multiple' => true,
                 // 'expanded' => true,
             ])
+            ->add('profilImage', FileType::class, $this->getConfiguration("Importer une photo de profil", "Choisir un fichier de votre PC", [
+                'required' => false
+            ]))
             ->add('isActif', CheckboxType::class, $this->getConfiguration("Cocher pour activer le compte", "" , [
                 'mapped' => true
             ]))
