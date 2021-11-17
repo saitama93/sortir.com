@@ -40,7 +40,7 @@ class Sortie
 
     /**
      * @ORM\Column(type="integer")
-     *  @Assert\GreaterThan(0,  message="Le nombre d'inscription minimum doit être de 1.")
+     *  @Assert\GreaterThan(0,  message="Le nombre d'inscriptions minimum doit être de 1.")
      */
     private $nbInscriptionsMax;
 
