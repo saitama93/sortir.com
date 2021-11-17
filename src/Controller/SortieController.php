@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Sortie;
 use App\Entity\Utilisateur;
 use DateTime;
+use DateInterval;
 use App\Form\SortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
@@ -191,10 +192,11 @@ class SortieController extends AbstractController
     public function annulerSortie(Request $request, Sortie $sortie, EtatRepository $etatRepo): Response
     {
         $user = $this->getUser();
-
+        $today =  new DateTime('NOW');
+        $today = $today->add(new DateInterval('PT1H'));
         // On vérifie si la personne connectée est l'organisateur ou si elle est admin
 
-        if ($user == $sortie->getOrganisateur() || $user->getIsAdmin()) {
+        if (($user == $sortie->getOrganisateur() || $user->getIsAdmin() )&& $sortie->getDateLimiteInscription() > $today ) {
 
             $form = $this->createForm(CancelSortieFormType::class, $sortie);
             $form->handleRequest($request);
@@ -215,11 +217,22 @@ class SortieController extends AbstractController
                 'form' => $form,
             ]);
         } else {
-            $this->addFlash(
-                'danger',
-                "Impossible pour vous d'annuler cette sortie"
-            );
-            return $this->redirectToRoute('home');
+
+            if($sortie->getDateLimiteInscription() <= $today){
+                $this->addFlash(
+                    'danger',
+                    "Impossible d'annuler une sortie où la date d'inscription est terminée"
+                ); 
+            }
+
+            else{
+                $this->addFlash(
+                    'danger',
+                    "Impossible pour vous d'annuler cette sortie"
+                );
+            }
+            
+            return $this->redirect($request->headers->get('referer'));
         }
     }
 
