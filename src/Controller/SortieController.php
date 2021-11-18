@@ -108,9 +108,9 @@ class SortieController extends AbstractController
 
     /**
      * Permet à l'utilisateur de faire une réservation
-     * 
      * @Route("/reserver/{id}", name="reservation_new")
-     *
+     * @param Sortie $sortie
+     * @param EntityManagerInterface $em
      * @return void
      */
     public function reservation(Sortie $sortie, EntityManagerInterface $em, EtatRepository $etatRepo)
