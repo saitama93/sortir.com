@@ -17,7 +17,7 @@ class HomeController extends AbstractController
     public function index(SortieRepository $repo, Request $request): Response
     {
 
-        if($this->getUser() != null){
+        
         $data = new SearchData();
    
         $form = $this->createForm(SearchForm::class, $data);
@@ -32,12 +32,5 @@ class HomeController extends AbstractController
        
         }
 
-        else{
-            $sorties = $repo->findAll();
-            return $this->render('sortie/index.html.twig', [
-                'sorties' => $sorties,
-                'form' => null,
-            ]);
-        }  
-    }
+       
 }

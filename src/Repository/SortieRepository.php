@@ -24,18 +24,19 @@ class SortieRepository extends ServiceEntityRepository
     }
 
 
-    public function findSearch(SearchData $search, Utilisateur $user)
+    public function findSearch(SearchData $search, Utilisateur $user = null)
     {
 
-        $query = $this
+        
+        if($user){
+
+
+            $query = $this
             ->createQueryBuilder('sortie')
             ->select('participants','organisateur', 'sortie')
             ->leftjoin('sortie.participants', 'participants')
             ->leftjoin('sortie.organisateur', 'organisateur')
             ->leftjoin('sortie.etat', 'etat');
-
-
-
 
 
             $date= new DateTime('NOW');
@@ -108,8 +109,72 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('user', $user);
         }
 
-    
+   
+    }
 
+    else{
+
+
+        $query = $this
+        ->createQueryBuilder('sortie')
+        ->select('participants','organisateur', 'sortie')
+        ->leftjoin('sortie.participants', 'participants')
+        ->leftjoin('sortie.organisateur', 'organisateur')
+        ->leftjoin('sortie.etat', 'etat');
+
+
+
+        $date= new DateTime('NOW');
+        if (!empty($search->passee)) {
+            $query = $query
+                ->andWhere('sortie.dateHeureDebut < :now')
+                ->setParameter('now', $date->add(new DateInterval('PT1H')));
+                
+        } else{
+            $query = $query
+            ->andWhere('sortie.dateHeureDebut >= :now')
+            ->andWhere('etat.id = 1 ')
+            ->setParameter('now', $date->add(new DateInterval('PT1H')));
+        }
+
+
+    if (!empty($search->q)) {
+        $query = $query
+            ->andWhere('sortie.nom LIKE :q')
+            ->setParameter('q', "%{$search->q}%");
+    }
+
+
+    if (!empty($search->debut) && !empty($search->fin) ) {
+        $query = $query
+            ->andWhere('sortie.dateHeureDebut BETWEEN :debut AND :fin')
+            ->andWhere('sortie.dateHeureFin BETWEEN :debut AND :fin')
+            ->setParameter('debut', $search->debut)
+            ->setParameter('fin', $search->fin);
+    }
+
+    else{
+        if(!empty($search->debut)){
+            $query = $query
+            ->andWhere('sortie.dateHeureDebut >= :debut')
+            ->setParameter('debut', $search->debut);
+        }
+        if(!empty($search->fin)){
+            $query = $query
+            ->andWhere('sortie.dateHeurFin <= :fin')
+            ->setParameter('fin', $search->fin);
+        }
+    }
+
+
+    if (!empty($search->sites)) {
+        $query = $query
+            ->andWhere('sortie.site = :site')
+            ->setParameter('site', $search->sites);
+    }
+        
+
+    }
         return $query->getQuery()->getResult();
     }
 

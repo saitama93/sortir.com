@@ -40,11 +40,16 @@
 				</div>
                 <!--La classe bg-success ajoute un fond vert à l'élément-->
                 <div class="col">
-				
-				{{ form_row(form.participant) }}
+				{% if app.user != null %}
+    		{{ form_row(form.participant) }}
 				{{ form_row(form.organisateur) }}
         	{{ form_row(form.nonparticipant) }}
+
+      {% endif %}
+		
           	{{ form_row(form.passee) }}
+
+            
 				
 				</div>
 
@@ -66,7 +71,7 @@
 
 
 
-{{ form_end(form) }}
+{{ form_end(form,  {'render_rest': false}) }}
 
 {% endif %}
 	
