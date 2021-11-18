@@ -8,6 +8,12 @@
 
 {% block body %}
 
+{% if app.user and app.user.isAdmin == false %}
+	<div class="d-flex justify-content-end">
+		<a class="btn btn-success" href="{{ path('sortie_new')}}">Nouvelle sortie</a>
+	</div>
+{% endif %}
+
 
 {% if form != null %}
 
