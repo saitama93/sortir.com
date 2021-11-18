@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class RegistrationController extends AbstractController
 {
     /**
+     * Permet d'inscricre un nouveau utilisateur
      * @Route("/inscription", name="app_register")
+     * @param Request $request
+     * @param UserPasswordHasherInterface $userPasswordHasherInterface
+     * @param EntityManagerInterface $em
+     * @return Response
      */
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasherInterface, EntityManagerInterface $em): Response
     {
         $user = new Utilisateur();
         
@@ -39,10 +45,9 @@ class RegistrationController extends AbstractController
                 )
             );
             $user->setUpdatedAt(new DateTime("now"));
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            
+            $em->persist($user);
+            $em->flush();
             
             // Message flash
             $this->addFlash(

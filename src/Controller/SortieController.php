@@ -85,7 +85,7 @@ class SortieController extends AbstractController
                 'danger',
                 "Impossible de modifier une sortie dont vous n'êtes pas l'organisateur."
             );
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
         } else {
 
 
@@ -96,7 +96,7 @@ class SortieController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->getDoctrine()->getManager()->flush();
 
-                return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
             }
 
             return $this->renderForm('sortie/edit.html.twig', [
@@ -108,12 +108,12 @@ class SortieController extends AbstractController
 
     /**
      * Permet à l'utilisateur de faire une réservation
-     * 
      * @Route("/reserver/{id}", name="reservation_new")
-     *
+     * @param Sortie $sortie
+     * @param EntityManagerInterface $em
      * @return void
      */
-    public function reservation(Sortie $sortie, EntityManagerInterface $em)
+    public function reservation(Sortie $sortie, EntityManagerInterface $em, EtatRepository $etatRepo)
     {
         $user = $this->getUser();
         $verif = null;
@@ -122,20 +122,40 @@ class SortieController extends AbstractController
         // On vérifie si l'utilisateur participe déjà la sortie
         foreach ($sortie->getParticipants() as $participant) {
             if ($participant == $user) {
-                $verif = true;
-            } else {
-                $verif = false;
+                $this->addFlash(
+                    'danger',
+                    "Vous participez déjà à cette sortie."
+                );
+                return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
             }
         }
 
-        //On vérifie  si il rest une place de libre pour cette sortie
+        // On vérifie si la sortie est bien à l'état ouverte
+        if ($sortie->getEtat() != $etatRepo->find(2)) {
+            $this->addFlash(
+                'danger',
+                "La sortie n'est pas ouverte aux inscriptions."
+            );
+            return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
+        }
+
+        // On vérifie que la date limite d'inscription n'est pas passée
+        if ($sortie->getDateLimiteInscription() > new DateTime) {
+            $this->addFlash(
+                'danger',
+                "La date limite pour s'inscrire est passée."
+            );
+            return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
+        }
+
+        //On vérifie si il reste une place de libre pour cette sortie
         if ($nbParticipants < $sortie->getNbInscriptionsMax()) {
             if ($sortie->getDateLimiteInscription() < new DateTime("now")) {
                 $this->addFlash(
                     'danger',
                     "Vous avez dépassé la date limite d'inscription pour cette sortie."
                 );
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
             } else {
                 $sortie->addParticipant($user);
                 $em->persist($sortie);
@@ -145,14 +165,14 @@ class SortieController extends AbstractController
                     'success',
                     "Votre réservation a bien été prise en compte."
                 );
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
             }
         } else {
             $this->addFlash(
                 'danger',
                 "Il n'y a plus de place disponible pour cette sortie."
             );
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
         }
     }
 
@@ -176,13 +196,13 @@ class SortieController extends AbstractController
 
             $em->persist($sortie);
             $em->flush();
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
         } else {
             $this->addFlash(
                 'danger',
                 "Vous n'êtes pas inscrit à cette sortie."
             );
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
         }
     }
 
@@ -196,7 +216,7 @@ class SortieController extends AbstractController
         $today = $today->add(new DateInterval('PT1H'));
         // On vérifie si la personne connectée est l'organisateur ou si elle est admin
 
-        if (($user == $sortie->getOrganisateur() || $user->getIsAdmin() )&& $sortie->getDateLimiteInscription() > $today ) {
+        if (($user == $sortie->getOrganisateur() || $user->getIsAdmin()) && $sortie->getDateLimiteInscription() > $today) {
 
             $form = $this->createForm(CancelSortieFormType::class, $sortie);
             $form->handleRequest($request);
@@ -210,7 +230,7 @@ class SortieController extends AbstractController
                     "Sortie bien annulée"
                 );
 
-                return $this->redirectToRoute('home', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
             }
             return $this->renderForm('sortie/cancel.html.twig', [
                 'sortie' => $sortie,
@@ -218,20 +238,18 @@ class SortieController extends AbstractController
             ]);
         } else {
 
-            if($sortie->getDateLimiteInscription() <= $today){
+            if ($sortie->getDateLimiteInscription() <= $today) {
                 $this->addFlash(
                     'danger',
                     "Impossible d'annuler une sortie où la date d'inscription est terminée"
-                ); 
-            }
-
-            else{
+                );
+            } else {
                 $this->addFlash(
                     'danger',
                     "Impossible pour vous d'annuler cette sortie"
                 );
             }
-            
+
             return $this->redirect($request->headers->get('referer'));
         }
     }
