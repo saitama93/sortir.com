@@ -96,9 +96,11 @@ hr .new1 {
 	<div class="card p-4">
 		<div class=" image d-flex flex-column justify-content-center align-items-center">
 			<button class="btn btn-secondary">
-            {# <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuhKCWUGyWAWug_sKmm_cmU6oSf-xgxGLYdQ&usqp=CAU" height="100" width="100"/> #}
-          {#     <img src="{{ vich_uploader_asset(user, 'profilImage') }}" alt="Image de  {{ user.prenom }}" height="100" width="100">#}
-         <img src="{{ asset('img/utilisateurs/' ~ user.fileName) }}" alt="Image de {{ user.prenom }}" height="100" width="100">
+            {% if user.fileName != null %}
+                 <img src="{{ asset('img/utilisateurs/' ~ user.fileName) }}" alt="Image de {{ user.prenom }}" height="100" width="100">
+            {% else %}
+            	<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuhKCWUGyWAWug_sKmm_cmU6oSf-xgxGLYdQ&usqp=CAU" height="100" width="100"/>
+            {% endif %}
             </button>
             <span class="name mt-3">{{ user.nom }} {{ user.prenom }}</span>
 			<span class="idd">@{{user.username}}</span>
