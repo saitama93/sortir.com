@@ -25,3 +25,4 @@ docker-compose.yaml
 .env
 public/.htaccess
 public/img/utilisateurs
+config/services.yaml
