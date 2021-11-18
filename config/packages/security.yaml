@@ -40,4 +40,11 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/inscription, roles: ROLE_ADMIN }
+        - { path: ^/sortie, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: /ajoutSortie, roles: ROLE_USER}
+        - { path: /modifierSortie, roles: ROLE_USER}
+        - { path: /reserver, roles: ROLE_USER}
+        - { path: /désinscrire, roles: ROLE_USER}
+        - { path: /annulerSortie, roles: ROLE_USER}
+        - { path: /publier, roles: ROLE_USER}
         # - { path: ^/profile, roles: ROLE_USER }
