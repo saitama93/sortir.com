@@ -84,14 +84,6 @@ class RegistrationFormType extends ApplicationType
             ->add('isAdmin', CheckboxType::class, $this->getConfiguration("Cocher si c'est un compte administrateur", "", [
                 'required' => false
             ]))
-            ->add('agreeTerms', CheckboxType::class, $this->getConfiguration("Termes", "", [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'Vous devez accepter nos termes',
-                    ]),
-                ],
-            ]))
         ;
     }
 
