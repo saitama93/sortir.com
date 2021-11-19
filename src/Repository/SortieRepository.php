@@ -49,6 +49,7 @@ class SortieRepository extends ServiceEntityRepository
                 $query = $query
                 ->andWhere('sortie.dateHeureDebut >= :now')
                 ->andWhere('etat.id > 1 ')
+                ->andWhere('etat.id != 6 ')
                 ->orWhere('organisateur = :user')
                 ->setParameter('user', $user)
                 ->setParameter('now', $date->add(new DateInterval('PT1H')));
@@ -134,6 +135,7 @@ class SortieRepository extends ServiceEntityRepository
             $query = $query
             ->andWhere('sortie.dateHeureDebut >= :now')
             ->andWhere('etat.id = 1 ')
+            
             ->setParameter('now', $date->add(new DateInterval('PT1H')));
         }
 

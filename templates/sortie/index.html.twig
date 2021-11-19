@@ -6,6 +6,15 @@
 {% block title %}Les sorties
 {% endblock %}
 
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('css/sortieTemplate.css') }}">
+{% endblock %}
+
+
+  {% block javascripts %}
+           <script src="{{ asset('js/sortieTemplate.js') }}"></script>
+        {% endblock %}
+
 {% block body %}
 
 {% if app.user and app.user.isAdmin == false %}
@@ -89,7 +98,7 @@ var sorties = new Array();
 </script>
 		<div class="row">
 			{% for sortie in sorties %}
-				{% include "sortie/_sortieTemplate.html.twig" %}
+				{% include "sortie/_sortieTemplate2.html.twig" %}
 			{% endfor %}
 		</div>
 
@@ -140,6 +149,8 @@ var seconds = Seconds_Between_Dates;
   var counterd = setInterval('timer()', 1000 );
 
 </script>
+
+
 
 {% endblock %}
 

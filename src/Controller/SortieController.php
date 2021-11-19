@@ -140,17 +140,14 @@ class SortieController extends AbstractController
         }
 
         // On vérifie que la date limite d'inscription n'est pas passée
-        if ($sortie->getDateLimiteInscription() > new DateTime) {
-            $this->addFlash(
-                'danger',
-                "La date limite pour s'inscrire est passée."
-            );
-            return $this->redirectToRoute('sortie_consultation', array('id' => $sortie->getId()));
-        }
 
-        //On vérifie si il reste une place de libre pour cette sortie
+        $today =  new DateTime('NOW');
+        $today = $today->add(new DateInterval('PT1H'));
+        
+
+        //On vérifie si il reste une place de libre pour cette sortie et si la date limite n'est pas passée
         if ($nbParticipants < $sortie->getNbInscriptionsMax()) {
-            if ($sortie->getDateLimiteInscription() < new DateTime("now")) {
+            if ($sortie->getDateLimiteInscription() < $today) {
                 $this->addFlash(
                     'danger',
                     "Vous avez dépassé la date limite d'inscription pour cette sortie."
