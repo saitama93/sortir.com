@@ -1,6 +1,6 @@
 # Installation
 
-Une fois le projet cloné installer les déoendances nécessaires avec:
+Une fois le projet cloné installer les dépendances nécessaires avec:
     
     composer install
 
